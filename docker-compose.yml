@@ -1,5 +1,15 @@
 version: '3'
 services:
+    consul-server-leader:
+        image: consul:latest
+        restart: always
+        container_name: consul-server-leader
+        command: "agent -server -bootstrap -ui -node=consul-server-leader -client=0.0.0.0"
+        environment:
+            - CONSUL_BIND_INTERFACE=eth0
+            - 'CONSUL_LOCAL_CONFIG={"connect": {"enabled": true}}'
+        ports:
+            - "8500:8500"
     nginx:
         image: nginx:latest
         restart: always
