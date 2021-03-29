@@ -62,3 +62,15 @@ services:
             --explicit_defaults_for_timestamp=true
         ports:
             - "3306:3306"
+    
+    redis:
+        image: redis:latest
+        restart: always
+        container_name: redis
+        privileged: true
+        command: redis-server /etc/redis/redis.conf
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./redis/redis.conf:/etc/redis/redis.conf
+            - ./redis/data:/data
