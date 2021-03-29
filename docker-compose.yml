@@ -21,10 +21,10 @@ services:
             - "8080:80"
             - "443:443"
         volumes:
-            - ./server/nginx/conf.d:/etc/nginx/conf.d
-            - ./server/nginx/fastcgi_params:/etc/nginx/fastcgi_params
-            - ./server/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./server/logs/nginx:/var/log/nginx
+            - ./nginx/conf.d:/etc/nginx/conf.d
+            - ./nginx/fastcgi_params:/etc/nginx/fastcgi_params
+            - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./logs/nginx:/var/log/nginx
             - ./wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
@@ -38,9 +38,9 @@ services:
             - "9000:9000"
             - "9501:9501"
         volumes:
-            - ./server/php/php.ini:/usr/local/etc/php/php.ini
-            - ./server/logs/php:/usr/local/var/log
-            - ./server/php/php-fpm.d:/usr/local/etc/php-fpm.d
+            - ./php/php.ini:/usr/local/etc/php/php.ini
+            - ./logs/php:/usr/local/var/log
+            - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
             - ./wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
@@ -51,7 +51,7 @@ services:
         container_name: php-mysql-5-7
         privileged: true
         volumes:
-            - ./server/mysql/conf:/etc/mysql
+            - ./mysql/conf:/etc/mysql
             - /var/lib/mysql:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=root
