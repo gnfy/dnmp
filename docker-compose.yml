@@ -37,6 +37,7 @@ services:
         ports:
             - "9000:9000"
             - "9501:9501"
+            - "9502:9502"
         volumes:
             - ./php/php.ini:/usr/local/etc/php/php.ini
             - ./logs/php:/usr/local/var/log
