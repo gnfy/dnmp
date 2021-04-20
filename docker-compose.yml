@@ -5,6 +5,9 @@ services:
         restart: always
         container_name: consul-server-leader
         command: "agent -server -bootstrap -ui -node=consul-server-leader -client=0.0.0.0"
+        volumes:
+            - ./consul/conf:/consul/config
+            - ./consul/data:/consul/data
         environment:
             - CONSUL_BIND_INTERFACE=eth0
             - 'CONSUL_LOCAL_CONFIG={"connect": {"enabled": true}}'
@@ -25,7 +28,7 @@ services:
             - ./nginx/fastcgi_params:/etc/nginx/fastcgi_params
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./logs/nginx:/var/log/nginx
-            - ./wwwroot:/wwwroot
+            - /mnt/d/wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
     php:
@@ -42,7 +45,7 @@ services:
             - ./php/php.ini:/usr/local/etc/php/php.ini
             - ./logs/php:/usr/local/var/log
             - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
-            - ./wwwroot:/wwwroot
+            - /mnt/d/wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
 
