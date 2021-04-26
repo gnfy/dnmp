@@ -49,6 +49,22 @@ services:
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
 
+    php7-3:
+        image: php:7.3-fpm
+        restart: always
+        privileged: true
+        container_name: php-7-3
+        working_dir: /wwwroot
+        ports:
+            - "9001:9000"
+        volumes:
+            - ./php7.3/php.ini:/usr/local/etc/php/php.ini
+            - ./logs/php7.3:/usr/local/var/log
+            - ./php7.3/php-fpm.d:/usr/local/etc/php-fpm.d
+            - ./wwwroot:/wwwroot
+            - /usr/share/nginx/html:/usr/share/nginx/html
+            - /etc/localtime:/etc/localtime:ro
+
     mysql:
         image: mysql:5.7
         restart: always
