@@ -32,7 +32,7 @@ services:
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
     php:
-        image: gnfy/php-fpm-swoole:1.6
+        image: gnfy/php-fpm-swoole:1.7
         restart: always
         privileged: true
         container_name: php-7-4-13
