@@ -14,20 +14,6 @@ services:
         ports:
             - "8500:8500"
     
-    consul-upsell-server-leader:
-            image: consul:latest
-            restart: always
-            container_name: consul-upsell-server-leader
-            command: "agent -server -bootstrap -ui -node=consul-server-leader -client=0.0.0.0"
-            volumes:
-                - ./consul/upsell/conf:/consul/config
-                - ./consul/upsell/data:/consul/data
-            environment:
-                - CONSUL_BIND_INTERFACE=eth0
-                - 'CONSUL_LOCAL_CONFIG={"connect": {"enabled": true}}'
-            ports:
-                - "8501:8500"
-    
     nginx:
         image: nginx:latest
         restart: always
@@ -47,7 +33,7 @@ services:
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
     php:
-        image: gnfy/php-fpm-swoole:1.8
+        image: gnfy/php-fpm-swoole:1.9
         restart: always
         privileged: true
         container_name: php-7-4-13
@@ -60,22 +46,6 @@ services:
             - ./php/php.ini:/usr/local/etc/php/php.ini
             - ./logs/php:/usr/local/var/log
             - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
-            - ./wwwroot:/wwwroot
-            - /usr/share/nginx/html:/usr/share/nginx/html
-            - /etc/localtime:/etc/localtime:ro
-
-    php7-3:
-        image: php:7.3-fpm
-        restart: always
-        privileged: true
-        container_name: php-7-3
-        working_dir: /wwwroot
-        ports:
-            - "9001:9000"
-        volumes:
-            - ./php7.3/php.ini:/usr/local/etc/php/php.ini
-            - ./logs/php7.3:/usr/local/var/log
-            - ./php7.3/php-fpm.d:/usr/local/etc/php-fpm.d
             - ./wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
@@ -110,35 +80,14 @@ services:
             - ./redis/redis.conf:/etc/redis/redis.conf
             - ./redis/data:/data
 
-
-    upsell-provider-php:
-        image: gnfy/php-fpm-swoole:1.8
+    golang:
+        image: golang:latest
         restart: always
         privileged: true
-        container_name: upsell-provider
-        working_dir: /wwwroot/upsell-service
-        ports:
-          - "9503:9503"
+        container_name: golang
+        working_dir: /wwwroot
         volumes:
-          - ./php/php.ini:/usr/local/etc/php/php.ini
-          - ./logs/php:/usr/local/var/log
-          - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
-          - ./wwwroot:/wwwroot
-          - /usr/share/nginx/html:/usr/share/nginx/html
-          - /etc/localtime:/etc/localtime:ro
-
-    upsell-consumer-php:
-        image: gnfy/php-fpm-swoole:1.8
-        restart: always
-        privileged: true
-        container_name: upsell-consumer
-        working_dir: /wwwroot/upsell-consumer
-        ports:
-            - "9504:9504"
-        volumes:
-            - ./php/php.ini:/usr/local/etc/php/php.ini
-            - ./logs/php:/usr/local/var/log
-            - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
             - ./wwwroot:/wwwroot
-            - /usr/share/nginx/html:/usr/share/nginx/html
-            - /etc/localtime:/etc/localtime:ro
+        ports:
+            - "8000:8080"
+        tty: true
