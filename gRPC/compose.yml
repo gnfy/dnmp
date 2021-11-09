@@ -1,0 +1,16 @@
+version: '3'
+services:
+    grpc-server:
+        build: 
+            context: .
+            dockerfile: Dockerfile
+        restart: always
+        privileged: true
+        container_name: grpc-server
+        working_dir: /wwwroot
+        volumes:
+            - ../../wwwroot:/wwwroot
+        ports:
+            - "8001:8001"
+            - "8002:8002"
+        tty: true

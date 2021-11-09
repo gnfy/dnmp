@@ -29,7 +29,7 @@ services:
             - ./nginx/fastcgi_params:/etc/nginx/fastcgi_params
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./logs/nginx:/var/log/nginx
-            - ./wwwroot:/wwwroot
+            - ../wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
     php:
@@ -46,7 +46,7 @@ services:
             - ./php/php.ini:/usr/local/etc/php/php.ini
             - ./logs/php:/usr/local/var/log
             - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
-            - ./wwwroot:/wwwroot
+            - ../wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
 
@@ -80,14 +80,40 @@ services:
             - ./redis/redis.conf:/etc/redis/redis.conf
             - ./redis/data:/data
 
-    golang:
-        image: golang:latest
+    grpc-skeleton:
+        build: 
+            context: ./gRPC/
+            dockerfile: Dockerfile
         restart: always
         privileged: true
-        container_name: golang
+        container_name: grpc-skeleton
         working_dir: /wwwroot
         volumes:
-            - ./wwwroot:/wwwroot
+            - ../wwwroot:/wwwroot
         ports:
             - "8000:8080"
+            - "8001:8081"
         tty: true
+
+    zipkin:
+        image: openzipkin/zipkin
+        container_name: zipkin
+        privileged: true
+        restart: always
+#        environment:
+#            - STORAGE_TYPE=mysql
+#            # Point the zipkin at the storage backend
+#            - MYSQL_DB=zipkin
+#            - MYSQL_USER=root
+#            - MYSQL_PASS=root
+#            - MYSQL_HOST=php-mysql-5-7
+#            - MYSQL_TCP_PORT=3306
+#            # Uncomment to enable scribe
+#            # - SCRIBE_ENABLED=true
+#            # Uncomment to enable self-tracing
+#            # - SELF_TRACING_ENABLED=true
+#            # Uncomment to enable debug logging
+#            # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
+        ports:
+            # Port used for the Zipkin UI and HTTP Api
+            - "9411:9411"

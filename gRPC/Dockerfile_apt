@@ -1,0 +1,14 @@
+FROM golang:latest
+
+MAINTAINER gnfy
+
+RUN go env -w GOPROXY=https://goproxy.cn \
+    && echo export PATH="$PATH:$(go env GOPATH)/bin" >> ~/.bashrc
+
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list \
+    && sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list
+
+RUN apt-get update \
+    && apt install -y protobuf-compiler \
+    && go get -u github.com/golang/protobuf/protoc-gen-go \
+    && go get -u github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway
