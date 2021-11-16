@@ -1,13 +1,13 @@
 # dnmp
 
-1. php 7.4.13
+1. swoole 4.8.1
 
-2. nginx 1.9
+2. php 5.4.23
 
-3. mysql 5.7
+3. nginx-perl
 
-4. consul
+4. mysql 5.7
 
-   
+5. consul
 
-   
+6. Go
