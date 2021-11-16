@@ -2,14 +2,20 @@ FROM golang:latest
 
 MAINTAINER gnfy
 
-RUN mkdir /opt/protoc
+RUN mkdir /opt/protoc && \
+    sed -i 's/deb.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list  && \
+    sed -i 's/security.debian.org/mirrors.aliyun.com/g' /etc/apt/sources.list && \
+    apt-get update && \
+    apt-get install --assume-yes apt-utils unzip curl
 
-# 需要预先下载protoc文件,并且解压到当前的文件夹下,地址：https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protoc-3.19.1-linux-x86_64.zip
+# 下载protobuf
+RUN curl -sfL https://github.com/protocolbuffers/protobuf/releases/download/v3.19.1/protoc-3.19.1-linux-x86_64.zip -o protoc.zip
 
-COPY protoc-3.19.1-linux-x86_64 /opt/protoc
+#解压
+RUN unzip -o protoc.zip -d /opt/protoc
 
-RUN go env -w GOPROXY=https://goproxy.cn \
-    && echo export PATH="$PATH:$(go env GOPATH)/bin:/opt/protoc/bin" >> ~/.bashrc
+RUN go env -w GOPROXY=https://goproxy.cn && \
+    echo export PATH="$PATH:$(go env GOPATH)/bin:/opt/protoc/bin" >> ~/.bashrc
 
 # Install grpc
 RUN go get -u google.golang.org/grpc \

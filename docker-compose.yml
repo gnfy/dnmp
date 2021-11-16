@@ -15,10 +15,10 @@ services:
             - "8500:8500"
     
     nginx:
-        image: nginx:latest
+        image: nginx:stable-alpine-perl
         restart: always
         privileged: true
-        container_name: nginx-1-9
+        container_name: nginx
         working_dir: /wwwroot
         ports:
             - "80:80"
@@ -29,23 +29,6 @@ services:
             - ./nginx/fastcgi_params:/etc/nginx/fastcgi_params
             - ./nginx/nginx.conf:/etc/nginx/nginx.conf
             - ./logs/nginx:/var/log/nginx
-            - ../wwwroot:/wwwroot
-            - /usr/share/nginx/html:/usr/share/nginx/html
-            - /etc/localtime:/etc/localtime:ro
-    php:
-        image: gnfy/php-fpm-swoole:1.9
-        restart: always
-        privileged: true
-        container_name: php-7-4-13
-        working_dir: /wwwroot
-        ports:
-            - "9000:9000"
-            - "9501:9501"
-            - "9502:9502"
-        volumes:
-            - ./php/php.ini:/usr/local/etc/php/php.ini
-            - ./logs/php:/usr/local/var/log
-            - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
             - ../wwwroot:/wwwroot
             - /usr/share/nginx/html:/usr/share/nginx/html
             - /etc/localtime:/etc/localtime:ro
@@ -94,6 +77,26 @@ services:
             - "8000:8080"
             - "8001:8081"
         tty: true
+
+    swoole:
+        image: gnfy/swoole-fpm:1.1
+        #build:
+        #    context: ./swoole/
+        #    dockerfile: Dockerfile
+        restart: always
+        privileged: true
+        container_name: swoole-4-8-1 
+        working_dir: /wwwroot
+        ports:
+            - "9000:9000"
+            - "9501:9501"
+            - "9502:9502"
+        volumes:
+            - ../wwwroot:/wwwroot
+            - ./php/php.ini:/usr/local/etc/php/php.ini
+            - ./logs/php:/usr/local/var/log
+            - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
+            - /usr/share/nginx/html:/usr/share/nginx/html
 
     zipkin:
         image: openzipkin/zipkin
