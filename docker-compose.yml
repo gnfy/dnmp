@@ -63,20 +63,20 @@ services:
             - ./redis/redis.conf:/etc/redis/redis.conf
             - ./redis/data:/data
 
-    grpc-skeleton:
-        build: 
-            context: ./gRPC/
-            dockerfile: Dockerfile
-        restart: always
-        privileged: true
-        container_name: grpc-skeleton
-        working_dir: /wwwroot
-        volumes:
-            - ../wwwroot:/wwwroot
-        ports:
-            - "8000:8080"
-            - "8001:8081"
-        tty: true
+    # grpc-skeleton:
+    #     build: 
+    #         context: ./gRPC/
+    #         dockerfile: Dockerfile
+    #     restart: always
+    #     privileged: true
+    #     container_name: grpc-skeleton
+    #     working_dir: /wwwroot
+    #     volumes:
+    #         - ../wwwroot:/wwwroot
+    #     ports:
+    #         - "8000:8080"
+    #         - "8001:8081"
+    #     tty: true
 
     swoole:
         image: gnfy/swoole-fpm:1.1
@@ -98,25 +98,25 @@ services:
             - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
             - /usr/share/nginx/html:/usr/share/nginx/html
 
-    zipkin:
-        image: openzipkin/zipkin
-        container_name: zipkin
-        privileged: true
-        restart: always
-#        environment:
-#            - STORAGE_TYPE=mysql
-#            # Point the zipkin at the storage backend
-#            - MYSQL_DB=zipkin
-#            - MYSQL_USER=root
-#            - MYSQL_PASS=root
-#            - MYSQL_HOST=php-mysql-5-7
-#            - MYSQL_TCP_PORT=3306
-#            # Uncomment to enable scribe
-#            # - SCRIBE_ENABLED=true
-#            # Uncomment to enable self-tracing
-#            # - SELF_TRACING_ENABLED=true
-#            # Uncomment to enable debug logging
-#            # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
-        ports:
-            # Port used for the Zipkin UI and HTTP Api
-            - "9411:9411"
+#     zipkin:
+#         image: openzipkin/zipkin
+#         container_name: zipkin
+#         privileged: true
+#         restart: always
+# #        environment:
+# #            - STORAGE_TYPE=mysql
+# #            # Point the zipkin at the storage backend
+# #            - MYSQL_DB=zipkin
+# #            - MYSQL_USER=root
+# #            - MYSQL_PASS=root
+# #            - MYSQL_HOST=php-mysql-5-7
+# #            - MYSQL_TCP_PORT=3306
+# #            # Uncomment to enable scribe
+# #            # - SCRIBE_ENABLED=true
+# #            # Uncomment to enable self-tracing
+# #            # - SELF_TRACING_ENABLED=true
+# #            # Uncomment to enable debug logging
+# #            # - JAVA_OPTS=-Dlogging.level.zipkin=DEBUG -Dlogging.level.zipkin2=DEBUG
+#         ports:
+#             # Port used for the Zipkin UI and HTTP Api
+#             - "9411:9411"
