@@ -98,6 +98,24 @@ services:
             - ./php/php-fpm.d:/usr/local/etc/php-fpm.d
             - /usr/share/nginx/html:/usr/share/nginx/html
 
+    tm-php:
+        image: gnfy/tm-php:1.1
+        #build:
+        #    context: ./php7.0.33/
+        #    dockerfile: Dockerfile
+        restart: always
+        privileged: true
+        container_name: tm-php-1-1
+        working_dir: /wwwroot
+        ports:
+            - "9001:9000"
+        volumes:
+            - ../wwwroot:/wwwroot
+            - ./php7.0.33/php.ini:/usr/local/etc/php/php.ini
+            - ./logs/php7.0.33:/usr/local/var/log
+            - ./php7.0.33/php-fpm.d:/usr/local/etc/php-fpm.d
+            - /usr/share/nginx/html:/usr/share/nginx/html
+
 #     zipkin:
 #         image: openzipkin/zipkin
 #         container_name: zipkin
