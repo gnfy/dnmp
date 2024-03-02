@@ -111,6 +111,7 @@ services:
             - "9001:9000"
         volumes:
             - ../wwwroot:/wwwroot
+            - ../wwwroot:/home/wwwroot
             - ./php7.0.33/php.ini:/usr/local/etc/php/php.ini
             - ./logs/php7.0.33:/usr/local/var/log
             - ./php7.0.33/php-fpm.d:/usr/local/etc/php-fpm.d
